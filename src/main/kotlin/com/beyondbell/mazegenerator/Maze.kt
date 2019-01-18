@@ -1,5 +1,7 @@
 package com.beyondbell.mazegenerator
 
+import com.beyondbell.mazegenerator.cells.Cell
+import com.beyondbell.mazegenerator.cells.CellProperty
 import kotlin.random.Random
 
 class Maze {
@@ -8,27 +10,30 @@ class Maze {
 	constructor(dimension: Int) {
 		grid = Array(dimension + 2) { y -> Array(dimension + 2) { x -> Cell(y, x) } }
 		for (i in 0 until grid.size) {
-			grid[i][0] = Wall(i, 0)
-			grid[i][grid.size - 1] = Wall(i, grid.size - 1)
-			grid[0][i] = Wall(0, i)
-			grid[grid[0].size - 1][i] = Wall(grid[0].size - 1, i)
+			grid[i][0] = Cell(i, 0, CellProperty.Wall)
+			grid[i][grid[0].size - 1] = Cell(i, grid[0].size - 1, CellProperty.Wall)
+			grid[0][i] = Cell(0, i, CellProperty.Wall)
+			grid[grid.size - 1][i] = Cell(grid.size - 1, i, CellProperty.Wall)
 		}
 	}
 
 	constructor(dimensionY: Int, dimensionX: Int) {
 		grid = Array(dimensionY + 2) { y -> Array(dimensionX + 2) { x -> Cell(y, x) } }
 		for (i in 0 until grid.size) {
-			grid[i][0] = Wall(i, 0)
-			grid[i][grid.size - 1] = Wall(i, grid.size - 1)
-			grid[0][i] = Wall(0, i)
-			grid[grid[0].size - 1][i] = Wall(grid[0].size - 1, i)
+			grid[i][0] = Cell(i, 0, CellProperty.Wall)
+			grid[i][grid[0].size - 1] = Cell(i, grid[0].size - 1, CellProperty.Wall)
+		}
+		for (i in 0 until grid[0].size) {
+			grid[0][i] = Cell(0, i, CellProperty.Wall)
+			grid[grid.size - 1][i] = Cell(grid.size - 1, i, CellProperty.Wall)
 		}
 	}
 
-	fun generate(startPosition: Pair<Int, Int> = Pair(0, 0)): Maze {
+	@JvmOverloads
+	fun generate(startPosition: Pair<Int, Int> = Pair(Random.nextInt(grid.size - 2), Random.nextInt(grid[0].size - 2))): Maze {
 		val cellHistory = ArrayList<Cell>()
 		val ids = Array(grid.size) {Array(grid[0].size) { -1 } }
-		var cell = grid[startPosition.second + 1][startPosition.first + 1]
+		var cell = grid[startPosition.first + 1][startPosition.second + 1]
 		ids[cell.y][cell.x] = 0
 
 		var neighbors = cell.getReadyNeighbors(grid, ids)
@@ -43,21 +48,19 @@ class Maze {
 			}
 
 			neighbors = cell.getReadyNeighbors(grid, ids)
-		} while (ids[cell.y][cell.x] != 0 || neighbors.isNotEmpty())
-
-		ids.forEach {
-			it.forEach {
-				print(it)
-				print("\t")
-			}
-			println()
-		}
-		println(ids)
+		} while (cellHistory.isNotEmpty() || neighbors.isNotEmpty())
 
 		return this
 	}
 
 	fun get(): Array<Array<Cell>> {
 		return grid.clone()
+	}
+}
+
+fun main(args: Array<String>) {
+	while (true) {
+		val maze = Maze(100)
+		println(maze)
 	}
 }

@@ -299,19 +299,20 @@ public class MyMaze {
   @Override
   public String toString() {
       updateGrid();
-      String output = "";
+      StringBuilder output = new StringBuilder();
       for (int y = 0; y < gridDimensionY; y++) {
           for (int x = 0; x < gridDimensionX; x++) {
-              output += grid[x][y];
+              output.append(grid[x][y]);
           }
-          output += "\n";
+          output.append("\n");
       }
-      return output;
+      return output.toString();
   }
 
   // run it
   public static void main(String[] args) {
-      MyMaze maze = new MyMaze(200);
+      MyMaze maze = new MyMaze(500);
+      System.out.println("Solving");
       maze.solve();
       maze.draw();
   }

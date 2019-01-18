@@ -1,13 +1,14 @@
 package com.beyondbell.mazegenerator;
 
-import kotlin.Pair;
+import com.beyondbell.mazegenerator.cells.Cell;
+import com.beyondbell.mazegenerator.cells.CellProperty;
 
-import java.applet.Applet;
+import javax.swing.JApplet;
 import java.awt.Graphics;
 
-public class T extends Applet {
-	private Cell[][] grid = new Maze(50).generate(new Pair<>(0, 0)).get();
-	private int size = 10;
+public class T extends JApplet {
+	private Cell[][] grid = new Maze(350, 700).generate().get();
+	private int size = 2;
 
 	@Override
 	public void init() {
@@ -20,7 +21,7 @@ public class T extends Applet {
 		super.paint(graphics);
 		for (Cell[] cells : grid) {
 			for (Cell cell : cells) {
-				if (cell instanceof Wall) {
+				if (cell.getProperty() == CellProperty.Wall) {
 					graphics.fillRect(cell.getX() * size, cell.getY() * size, cell.getX() * size + size, cell.getY() * size + size);
 				} else {
 					if (cell.getTopWall()) {
@@ -30,7 +31,7 @@ public class T extends Applet {
 						graphics.drawLine(cell.getX() * size, cell.getY() * size, cell.getX() * size, cell.getY() * size + size);
 					}
 					if (cell.getBottomWall()) {
-						graphics.drawLine(cell.getX() * size + size, cell.getY() * size, cell.getX() * size + size, cell.getY() * size + size);
+						graphics.drawLine(cell.getX() * size, cell.getY() * size + size, cell.getX() * size + size, cell.getY() * size + size);
 					}
 					if (cell.getRightWall()) {
 						graphics.drawLine(cell.getX() * size + size, cell.getY() * size, cell.getX() * size + size, cell.getY() * size + size);
@@ -38,14 +39,5 @@ public class T extends Applet {
 				}
 			}
 		}
-
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		grid = new Maze(50).generate(new Pair<>(0, 0)).get();
-		repaint();
 	}
 }
