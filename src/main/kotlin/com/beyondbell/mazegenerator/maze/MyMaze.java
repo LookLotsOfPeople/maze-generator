@@ -1,4 +1,4 @@
-package com.beyondbell.mazegenerator;
+package com.beyondbell.mazegenerator.maze;
 
 import java.util.ArrayList;
 import java.util.Collections;

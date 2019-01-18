@@ -1,4 +1,4 @@
-package com.beyondbell.mazegenerator
+package com.beyondbell.mazegenerator.maze
 
 import com.beyondbell.mazegenerator.cells.Cell
 import com.beyondbell.mazegenerator.cells.CellProperty
