@@ -8,6 +8,6 @@ class Maze(dimension: Int, startPosition: Pair<Int, Int> = Pair(0, 0), endingPos
 	}
 
 	private fun generate() {
-		
+
 	}
 }
