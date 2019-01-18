@@ -6,14 +6,14 @@ open class Cell(val y: Int, val x: Int, var property: CellProperty = CellPropert
 	var leftWall = true
 	var rightWall = true
 
-	fun getReadyNeighbors(grid: Array<Array<Cell>>, ids: Array<Array<Int>>): Array<Cell> {
+	fun getReadyNeighbors(grid: Array<Array<Cell>>, traversed: Array<Array<Boolean>>): Array<Cell> {
 		val readyNeighbors = ArrayList<Cell>()
 
 		arrayOf(Pair(1, 0), Pair(-1, 0), Pair(0, 1), Pair(0, -1)).forEach {
 			val y = y + it.first
 			val x = x + it.second
 			val cell = grid[y][x]
-			if (cell.property != CellProperty.Wall && ids[y][x] == -1) {
+			if (cell.property != CellProperty.Wall && !traversed[y][x]) {
 				readyNeighbors.add(cell)
 			}
 		}

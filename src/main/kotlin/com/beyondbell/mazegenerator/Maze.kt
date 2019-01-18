@@ -32,22 +32,22 @@ class Maze {
 	@JvmOverloads
 	fun generate(startPosition: Pair<Int, Int> = Pair(Random.nextInt(grid.size - 2), Random.nextInt(grid[0].size - 2))): Maze {
 		val cellHistory = ArrayList<Cell>()
-		val ids = Array(grid.size) {Array(grid[0].size) { -1 } }
+		val traversed = Array(grid.size) {Array(grid[0].size) { false } }
 		var cell = grid[startPosition.first + 1][startPosition.second + 1]
-		ids[cell.y][cell.x] = 0
+		traversed[cell.y][cell.x] = true
 
-		var neighbors = cell.getReadyNeighbors(grid, ids)
+		var neighbors = cell.getReadyNeighbors(grid, traversed)
 		do {
 			if (neighbors.isNotEmpty()) {
 				cellHistory.add(cell)
 				cell = cell.connect(neighbors[Random.nextInt(neighbors.size)])
-				ids[cell.y][cell.x] = ids[cellHistory.last().y][cellHistory.last().x] + 1
+				traversed[cell.y][cell.x] = true
 			} else {
 				cell = cellHistory.last()
 				cellHistory.removeAt(cellHistory.lastIndex)
 			}
 
-			neighbors = cell.getReadyNeighbors(grid, ids)
+			neighbors = cell.getReadyNeighbors(grid, traversed)
 		} while (cellHistory.isNotEmpty() || neighbors.isNotEmpty())
 
 		return this
