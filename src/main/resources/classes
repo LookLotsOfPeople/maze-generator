@@ -1,0 +1,56 @@
+Warrior
+- melee
+- one mid-range weapon
+
+Archer
+- long-range
+- weak short-range weapon
+
+Sniper
+- long long-range
+- suffers from close range
+    - abilities attempt to somewhat counteract this
+
+Guard
+- close-range
+- tank health
+
+Spirit
+- lots of power
+- low health
+
+Healer
+- low damage output
+- healing capabilities
+
+Jade
+- allrounder
+- can heal itself
+
+Fire
+- good damage
+- possibility of enflaming
+
+Ice
+- mid damage
+- tankiness in between guard and normal
+- possibility of brief stun
+
+Earth
+- damage in between fire and ice
+- survivability is high and evident in abilities
+    - some healing ability for self and others
+
+Wind
+- damage comparable to earth
+- meant to be able to get around quickly
+
+Elementalist
+- weapon has chance to stun or enflame
+- abilities emphasize randomness between previous four elemental classes (^^ see above ^^)
+
+Stealth
+- based on stealth
+- hard to land a hit but lots of damage
+
+
