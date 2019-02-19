@@ -1,7 +1,8 @@
 package com.beyondbell.mazegenerator.maze
 
-import com.beyondbell.mazegenerator.cells.Cell
-import com.beyondbell.mazegenerator.cells.CellProperty
+import com.beyondbell.mazegenerator.maze.cells.Cell
+import com.beyondbell.mazegenerator.maze.cells.CellProperty
+import com.beyondbell.mazegenerator.maze.rooms.Room
 import kotlin.random.Random
 
 class Maze {
@@ -27,10 +28,14 @@ class Maze {
 			grid[0][i] = Cell(0, i, CellProperty.Wall)
 			grid[grid.size - 1][i] = Cell(grid.size - 1, i, CellProperty.Wall)
 		}
+
+		Room(5, 5).addRoom(2, 2, grid)
+		Room(5, 5).addRoom(17, 2, grid)
+		Room(5, 5).addRoom(19, 26, grid)
 	}
 
 	@JvmOverloads
-	fun generate(startPosition: Pair<Int, Int> = Pair(Random.nextInt(grid.size - 2), Random.nextInt(grid[0].size - 2))): Maze {
+	fun generate(collapses: Int = 0, gaps: Int = 0, rooms: Int = 0, roomsSize: Int = 5, startPosition: Pair<Int, Int> = Pair(Random.nextInt(grid.size - 2), Random.nextInt(grid[0].size - 2))): Maze {
 		val cellHistory = ArrayList<Cell>()
 		val traversed = Array(grid.size) {Array(grid[0].size) { false } }
 		var cell = grid[startPosition.first + 1][startPosition.second + 1]
@@ -50,17 +55,37 @@ class Maze {
 			neighbors = cell.getReadyNeighbors(grid, traversed)
 		} while (cellHistory.isNotEmpty() || neighbors.isNotEmpty())
 
+		// Random Connections
+		for (i in 0 until gaps) {
+			val randomCell = grid[Random.nextInt(grid.size - 2)][Random.nextInt(grid[0].size - 2)]
+			if (randomCell.property == CellProperty.Wall) {
+				continue
+			}
+			randomCell.getAllNeighbors(grid).forEach {
+				randomCell.connect(it)
+			}
+		}
+
+		// Random Collapses
+		for (i in 0 until collapses) {
+			val randomCell = grid[Random.nextInt(grid.size - 2) + 1][Random.nextInt(grid[0].size - 2) + 1]
+			if (randomCell != CellProperty.Wall) {
+				randomCell.disconnect(randomCell.getAllNeighbors(grid).random())
+			}
+		}
+
+		// Random Rooms
+		for (i in 0 until rooms) {
+			val randomCell = grid[Random.nextInt(grid.size - 2)][Random.nextInt(grid[0].size - 2)]
+			if (randomCell.property != CellProperty.Wall) {
+				randomCell.connect(randomCell.getAllNeighbors(grid).random())
+			}
+		}
+
 		return this
 	}
 
 	fun get(): Array<Array<Cell>> {
 		return grid.clone()
-	}
-}
-
-fun main(args: Array<String>) {
-	while (true) {
-		val maze = Maze(100)
-		println(maze)
 	}
 }

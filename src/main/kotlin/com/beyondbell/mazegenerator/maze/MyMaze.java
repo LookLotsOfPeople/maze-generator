@@ -311,7 +311,7 @@ public class MyMaze {
 
   // run it
   public static void main(String[] args) {
-      MyMaze maze = new MyMaze(500);
+      MyMaze maze = new MyMaze(200);
       System.out.println("Solving");
       maze.solve();
       maze.draw();

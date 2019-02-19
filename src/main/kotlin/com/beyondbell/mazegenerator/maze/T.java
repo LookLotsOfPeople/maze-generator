@@ -1,24 +1,25 @@
 package com.beyondbell.mazegenerator.maze;
 
-import com.beyondbell.mazegenerator.cells.Cell;
-import com.beyondbell.mazegenerator.cells.CellProperty;
+import com.beyondbell.mazegenerator.maze.cells.Cell;
+import com.beyondbell.mazegenerator.maze.cells.CellProperty;
 
-import javax.swing.JApplet;
+import java.applet.Applet;
 import java.awt.Graphics;
 
-public class T extends JApplet {
-	private Cell[][] grid = new Maze(350, 700).generate().get();
-	private int size = 2;
+public class T extends Applet {
+	private Cell[][] grid = new Maze(35, 70).generate(100, 100).get();
+	private int size = 20;
+
+	private boolean alt = false;
 
 	@Override
 	public void init() {
 		super.init();
-		resize(size * grid[0].length + 1, size * grid.length + 1);
+		resize(size * grid[0].length, size * grid.length);
 	}
 
 	@Override
 	public void paint(Graphics graphics) {
-		super.paint(graphics);
 		for (Cell[] cells : grid) {
 			for (Cell cell : cells) {
 				if (cell.getProperty() == CellProperty.Wall) {
@@ -39,5 +40,13 @@ public class T extends JApplet {
 				}
 			}
 		}
+
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		grid = new Maze(35, 70).generate(100, 100).get();
+		repaint();
 	}
 }
